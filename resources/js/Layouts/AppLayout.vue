@@ -63,6 +63,13 @@
                 >
                   Transactions
                 </jet-nav-link>
+
+                <jet-nav-link
+                  :href="route('years')"
+                  :active="route().current('years')"
+                >
+                  Years
+                </jet-nav-link>
               </div>
             </div>
 

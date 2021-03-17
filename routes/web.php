@@ -9,6 +9,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\DocumentTypeController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\YearController;
 
 /*
 |--------------------------------------------------------------------------
@@ -169,9 +170,9 @@ Route::delete('documenttypes/{documenttype}', [DocumentTypeController::class, 'd
 // //     // ->name('accountgroups.show')
 // //     // ->middleware('auth');
 
-//     Route::post('documenttypes', [DocumentTypeController::class, 'store'])
-//     ->name('documenttypes.store')
-//     ->middleware('auth');
+    Route::post('documents', [DocumentController::class, 'store'])
+    ->name('documents.store')
+    ->middleware('auth');
 
 // Route::get('documenttypes/{documenttype}/edit', [DocumentTypeController::class, 'edit'])
 //     ->name('documenttypes.edit')
@@ -181,6 +182,36 @@ Route::delete('documenttypes/{documenttype}', [DocumentTypeController::class, 'd
 //     ->name('documenttypes.update')
 //     ->middleware('auth');
 
-// Route::delete('documenttypes/{documenttype}', [DocumentTypeController::class, 'destroy'])
-//     ->name('documenttypes.destroy')
-//     ->middleware('auth');
+Route::delete('documents/{document}', [DocumentController::class, 'destroy'])
+    ->name('documents.destroy')
+    ->middleware('auth');
+
+
+
+    Route::get('years', [YearController::class, 'index'])
+    ->name('years')
+    ->middleware('auth');
+
+    Route::get('years/create', [YearController::class, 'create'])
+    ->name('years.create')
+    ->middleware('auth');
+
+// //     // Route::get('accountgroups/{accountgroup}', [AccountGroupController::class, 'show'])
+// //     // ->name('accountgroups.show')
+// //     // ->middleware('auth');
+
+    Route::post('years', [YearController::class, 'store'])
+    ->name('years.store')
+    ->middleware('auth');
+
+Route::get('years/{year}/edit', [YearController::class, 'edit'])
+    ->name('years.edit')
+    ->middleware('auth');
+
+Route::put('years/{year}', [YearController::class, 'update'])
+    ->name('years.update')
+    ->middleware('auth');
+
+Route::delete('years/{year}', [YearController::class, 'destroy'])
+    ->name('years.destroy')
+    ->middleware('auth');
