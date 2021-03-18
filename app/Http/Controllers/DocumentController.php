@@ -27,7 +27,7 @@ class DocumentController extends Controller
                         'type_id' => $document->type_id,
                         'company_id' => $document->company_id,
                         'year_id' => $document->year_id,
-                        'type_name' => $document->accountType->name,
+                        // 'type_name' => $document->accountType->name,
                     ];
                 }), 
         ]);
@@ -38,6 +38,7 @@ class DocumentController extends Controller
     {
         // $doc_types = \App\Models\DocumentType::all()->map->only('id','name','prefix');
         // $doc_first = \App\Models\DocumentType::all('id','name','prefix')->first();
+
         // $doc_types = \App\Models\DocumentType::all();
         // $doc_first = \App\Models\DocumentType::all()->first();
         // $refe = \App\Models\DocumentType::all('prefix')->first();
@@ -45,7 +46,7 @@ class DocumentController extends Controller
         // $account_types = \App\Models\AccountType::all()->map->only('id','name');
         // $account_first = \App\Models\AccountType::all('id','name')->first();
 
-        $account_types = \App\Models\AccountGroup::all()->map->only('id','name');
+        $account_groups = \App\Models\AccountGroup::all()->map->only('id','name');
         $account_first = \App\Models\AccountGroup::all('id','name')->first();
 
         $companies = \App\Models\Company::all()->map->only('id','name');
@@ -80,7 +81,11 @@ class DocumentController extends Controller
 
         return Inertia::render('Documents/Create',[ 
             'companies' => $companies, 'comp_first' => $comp_first,
-            'account_types' => $account_types, 'account_first' => $account_first,
+
+            'account_groups' => $account_groups, 'account_first' => $account_first,
+
+            // 'account_types' => $doc_types, 'account_first' => $doc_first,
+
             'years' => $years, 'year_first' => $year_first,
 
             'custom_object' => DocumentType::all()
@@ -101,7 +106,8 @@ class DocumentController extends Controller
     public function store(Req $request)
     {
         Request::validate([
-            'accounts.*.type_id' => ['required'],
+            // 'accounts.*.type_id' => ['required'],
+            'type_id' => ['required'],
             'company_id' => ['required'],
             'date' => ['required', 'date'],
             'ref' => ['required'],
@@ -112,9 +118,10 @@ class DocumentController extends Controller
             // 'balances.*.account_id' => ['required'],
             // 'balances.*.year_id' => ['required'],
         ]);
-        foreach($request->accounts as $acconut){
+        // foreach($request->accounts as $acconut){
             Document::create([
-                'type_id' => $acconut['type_id'],
+                // 'type_id' => $acconut['type_id'],
+                'type_id' => Request::input('type_id'),
                 'company_id' => Request::input('company_id'),
                 'description' => Request::input('description'),
                 'ref' => Request::input('ref'),
@@ -129,7 +136,7 @@ class DocumentController extends Controller
                 // 'account_id' => $balance['account_id'],
                 // 'year_id' => $balance['year_id'],
             ]);
-        }
+        // }
 
         return Redirect::route('documents')->with('success', 'Transaction created.');
         // Request::validate([

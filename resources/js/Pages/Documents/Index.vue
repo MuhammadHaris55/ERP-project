@@ -23,6 +23,7 @@
           <tr v-for="item in data" :key="item.id">
             <!-- <td class="py-1 px-4 border">{{ item.type_id }}</td> -->
             <td class="py-1 px-4 border">{{ item.ref }}</td>
+            <!-- <td class="py-1 px-4 border w-2/5">{{ item.date }}</td> -->
             <td class="py-1 px-4 border w-2/5">{{ item.description }}</td>
             <td class="py-1 px-4 border">
               <button

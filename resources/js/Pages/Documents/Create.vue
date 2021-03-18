@@ -45,6 +45,24 @@
             <option
               v-for="type in custom_object"
               :key="type.id"
+              :value="type.ref"
+            >
+              {{ type.ref }}
+            </option>
+          </select>
+          <div v-if="errors.type">{{ errors.type }}</div>
+        </div>
+
+        <div class="p-2 mr-2 mb-2 ml-6 flex flex-wrap">
+          <select
+            v-model="form.type_id"
+            class="pr-2 pb-2 w-full lg:w-1/4 rounded-md"
+            label="voucher"
+            placeholder="Enter Voucher"
+          >
+            <option
+              v-for="type in custom_object"
+              :key="type.id"
               :value="type.id"
             >
               {{ type.name }}
@@ -53,7 +71,7 @@
           <div v-if="errors.type">{{ errors.type }}</div>
         </div>
 
-        <div class="p-2 mr-2 mb-2 mt-4 ml-6 flex flex-wrap">
+        <!-- <div class="p-2 mr-2 mb-2 mt-4 ml-6 flex flex-wrap">
           <input
             type="text"
             v-model="form.ref"
@@ -63,7 +81,7 @@
             :value="custom_object.prefix"
           />
           <div v-if="errors.ref">{{ errors.ref }}</div>
-        </div>
+        </div> -->
 
         <div class="p-2 mr-2 mb-2 mt-4 ml-6 flex flex-wrap">
           <input
@@ -166,16 +184,13 @@
               </tr>
             </thead>
             <tbody>
-              <!-- <tr>
+              <tr>
                 <td>
-                  <select
-                    v-model="form.accounts.type_id"
-                    class="rounded-md w-36"
-                  >
+                  <select v-model="form.group" class="rounded-md w-36">
                     <option
-                      v-for="account in account_types"
+                      v-for="account in account_groups"
                       :key="account.id"
-                      :value="account.id"
+                      :value="account.name"
                     >
                       {{ account.name }}
                     </option>
@@ -195,9 +210,9 @@
                     class="rounded-md w-36"
                   />
                 </td>
-              </tr> -->
+              </tr>
 
-              <tr v-for="(account, index) in form.accounts" :key="account.id">
+              <!-- <tr v-for="(account, index) in form.accounts" :key="account.id">
                 <td>
                   <select v-model="account.type_id" class="rounded-md w-36">
                     <option
@@ -231,7 +246,7 @@
                     Delete
                   </button>
                 </td>
-              </tr>
+              </tr> -->
 
               <tr>
                 <th>Difference:</th>
@@ -284,7 +299,7 @@ export default {
   props: {
     errors: Object,
 
-    account_types: Object,
+    account_groups: Object,
     account_first: Object,
 
     // doc_types: Object,
@@ -310,9 +325,12 @@ export default {
         ref: this.custom_object[0].id,
         company_id: this.comp_first.id,
         year_id: this.year_first.id,
+        type_id: this.custom_object.id,
+        group: this.account_first.id,
+
         accounts: [
           {
-            type_id: this.account_first.id,
+            // type_id: this.account_first.id,
             debit: 0,
             credit: 0,
           },
@@ -329,9 +347,10 @@ export default {
 
     addRow() {
       this.form.accounts.push({
-        type_id: this.account_first.id,
+        // type_id: this.account_first.id,
         debit: 0,
         credit: 0,
+
         // ledger: "",
         // statement: "",
         // confirmation: "",

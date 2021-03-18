@@ -18134,7 +18134,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   props: {
     errors: Object,
-    account_types: Object,
+    account_groups: Object,
     account_first: Object,
     // doc_types: Object,
     // doc_first: Object,
@@ -18154,8 +18154,10 @@ __webpack_require__.r(__webpack_exports__);
         ref: this.custom_object[0].id,
         company_id: this.comp_first.id,
         year_id: this.year_first.id,
+        type_id: this.custom_object.id,
+        group: this.account_first.id,
         accounts: [{
-          type_id: this.account_first.id,
+          // type_id: this.account_first.id,
           debit: 0,
           credit: 0
         }]
@@ -18169,7 +18171,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     addRow: function addRow() {
       this.form.accounts.push({
-        type_id: this.account_first.id,
+        // type_id: this.account_first.id,
         debit: 0,
         credit: 0 // ledger: "",
         // statement: "",
@@ -24153,7 +24155,7 @@ var _hoisted_8 = {
   key: 0
 };
 var _hoisted_9 = {
-  "class": "p-2 mr-2 mb-2 mt-4 ml-6 flex flex-wrap"
+  "class": "p-2 mr-2 mb-2 ml-6 flex flex-wrap"
 };
 var _hoisted_10 = {
   key: 0
@@ -24223,7 +24225,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("form", {
-        onSubmit: _cache[8] || (_cache[8] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
+        onSubmit: _cache[11] || (_cache[11] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
           return $options.submit && $options.submit.apply($options, arguments);
         }, ["prevent"]))
       }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("select", {
@@ -24276,8 +24278,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.custom_object, function (type) {
         return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("option", {
           key: type.id,
-          value: type.id
-        }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(type.name), 9
+          value: type.ref
+        }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(type.ref), 9
         /* TEXT, PROPS */
         , ["value"]);
       }), 128
@@ -24286,20 +24288,27 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       /* NEED_PATCH */
       ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.form.ref]]), $props.errors.type ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.errors.type), 1
       /* TEXT */
-      )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
-        type: "text",
+      )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("select", {
         "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
-          return $data.form.ref = $event;
+          return $data.form.type_id = $event;
         }),
         "class": "pr-2 pb-2 w-full lg:w-1/4 rounded-md",
-        label: "ref",
-        readonly: "",
-        value: $props.custom_object.prefix
-      }, null, 8
-      /* PROPS */
-      , ["value"]), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.ref]]), $props.errors.ref ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.errors.ref), 1
+        label: "voucher",
+        placeholder: "Enter Voucher"
+      }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.custom_object, function (type) {
+        return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("option", {
+          key: type.id,
+          value: type.id
+        }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(type.name), 9
+        /* TEXT, PROPS */
+        , ["value"]);
+      }), 128
+      /* KEYED_FRAGMENT */
+      ))], 512
+      /* NEED_PATCH */
+      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.form.type_id]]), $props.errors.type ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.errors.type), 1
       /* TEXT */
-      )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+      )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"p-2 mr-2 mb-2 mt-4 ml-6 flex flex-wrap\">\n          <input\n            type=\"text\"\n            v-model=\"form.ref\"\n            class=\"pr-2 pb-2 w-full lg:w-1/4 rounded-md\"\n            label=\"ref\"\n            readonly\n            :value=\"custom_object.prefix\"\n          />\n          <div v-if=\"errors.ref\">{{ errors.ref }}</div>\n        </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
         type: "text",
         "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
           return $data.form.description = $event;
@@ -24326,52 +24335,39 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         }, ["prevent"]))
       }, " Add row "), _ctx.isError ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.firstError), 1
       /* TEXT */
-      )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("table", _hoisted_16, [_hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("tbody", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <tr>\n                <td>\n                  <select\n                    v-model=\"form.accounts.type_id\"\n                    class=\"rounded-md w-36\"\n                  >\n                    <option\n                      v-for=\"account in account_types\"\n                      :key=\"account.id\"\n                      :value=\"account.id\"\n                    >\n                      {{ account.name }}\n                    </option>\n                  </select>\n                </td>\n                <td>\n                  <input\n                    v-model=\"form.accounts.debit\"\n                    type=\"text\"\n                    class=\"rounded-md w-36\"\n                  />\n                </td>\n                <td>\n                  <input\n                    v-model=\"form.accounts.credit\"\n                    type=\"text\"\n                    class=\"rounded-md w-36\"\n                  />\n                </td>\n              </tr> "), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.form.accounts, function (account, index) {
-        return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("tr", {
-          key: account.id
-        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("select", {
-          "onUpdate:modelValue": function onUpdateModelValue($event) {
-            return account.type_id = $event;
-          },
-          "class": "rounded-md w-36"
-        }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.account_types, function (account) {
-          return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("option", {
-            key: account.id,
-            value: account.id
-          }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(account.name), 9
-          /* TEXT, PROPS */
-          , ["value"]);
-        }), 128
-        /* KEYED_FRAGMENT */
-        ))], 8
-        /* PROPS */
-        , ["onUpdate:modelValue"]), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, account.type_id]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
-          "onUpdate:modelValue": function onUpdateModelValue($event) {
-            return account.debit = $event;
-          },
-          type: "text",
-          "class": "rounded-md w-36"
-        }, null, 8
-        /* PROPS */
-        , ["onUpdate:modelValue"]), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, account.debit]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
-          "onUpdate:modelValue": function onUpdateModelValue($event) {
-            return account.credit = $event;
-          },
-          type: "text",
-          "class": "rounded-md w-36"
-        }, null, 8
-        /* PROPS */
-        , ["onUpdate:modelValue"]), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, account.credit]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
-          onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
-            return $options.deleteRow(index);
-          }, ["prevent"]),
-          "class": "border bg-indigo-300 rounded-xl px-4 py-2 m-4"
-        }, " Delete ", 8
-        /* PROPS */
-        , ["onClick"])])]);
+      )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("table", _hoisted_16, [_hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("tbody", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("select", {
+        "onUpdate:modelValue": _cache[8] || (_cache[8] = function ($event) {
+          return $data.form.group = $event;
+        }),
+        "class": "rounded-md w-36"
+      }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.account_groups, function (account) {
+        return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("option", {
+          key: account.id,
+          value: account.name
+        }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(account.name), 9
+        /* TEXT, PROPS */
+        , ["value"]);
       }), 128
       /* KEYED_FRAGMENT */
-      )), _hoisted_18, _hoisted_19])])]), _hoisted_20], 32
+      ))], 512
+      /* NEED_PATCH */
+      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.form.group]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+        "onUpdate:modelValue": _cache[9] || (_cache[9] = function ($event) {
+          return $data.form.accounts.debit = $event;
+        }),
+        type: "text",
+        "class": "rounded-md w-36"
+      }, null, 512
+      /* NEED_PATCH */
+      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.accounts.debit]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+        "onUpdate:modelValue": _cache[10] || (_cache[10] = function ($event) {
+          return $data.form.accounts.credit = $event;
+        }),
+        type: "text",
+        "class": "rounded-md w-36"
+      }, null, 512
+      /* NEED_PATCH */
+      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.accounts.credit]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <tr v-for=\"(account, index) in form.accounts\" :key=\"account.id\">\n                <td>\n                  <select v-model=\"account.type_id\" class=\"rounded-md w-36\">\n                    <option\n                      v-for=\"account in account_types\"\n                      :key=\"account.id\"\n                      :value=\"account.id\"\n                    >\n                      {{ account.name }}\n                    </option>\n                  </select>\n                </td>\n                <td>\n                  <input\n                    v-model=\"account.debit\"\n                    type=\"text\"\n                    class=\"rounded-md w-36\"\n                  />\n                </td>\n                <td>\n                  <input\n                    v-model=\"account.credit\"\n                    type=\"text\"\n                    class=\"rounded-md w-36\"\n                  />\n                </td>\n                <td>\n                  <button\n                    @click.prevent=\"deleteRow(index)\"\n                    class=\"border bg-indigo-300 rounded-xl px-4 py-2 m-4\"\n                  >\n                    Delete\n                  </button>\n                </td>\n              </tr> "), _hoisted_18, _hoisted_19])])]), _hoisted_20], 32
       /* HYDRATE_EVENTS */
       )])];
     }),
@@ -24604,7 +24600,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           key: item.id
         }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td class=\"py-1 px-4 border\">{{ item.type_id }}</td> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.ref), 1
         /* TEXT */
-        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.description), 1
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td class=\"py-1 px-4 border w-2/5\">{{ item.date }}</td> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.description), 1
         /* TEXT */
         ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
           "class": "border bg-indigo-300 rounded-xl px-4 py-1 m-1",
