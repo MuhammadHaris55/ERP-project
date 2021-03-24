@@ -7,6 +7,7 @@
     </template>
     <div class="">
       <form @submit.prevent="submit">
+        <!-- COMPANY ID -->
         <div class="p-2 mr-2 mb-2 ml-6 flex flex-wrap">
           <select
             v-model="form.company_id"
@@ -20,7 +21,7 @@
           </select>
           <div v-if="errors.type">{{ errors.type }}</div>
         </div>
-
+        <!-- YEAR ID -->
         <div class="p-2 mr-2 mb-2 ml-6 flex flex-wrap">
           <select
             v-model="form.year_id"
@@ -34,25 +35,7 @@
           </select>
           <div v-if="errors.type">{{ errors.type }}</div>
         </div>
-
-        <div class="p-2 mr-2 mb-2 ml-6 flex flex-wrap">
-          <select
-            v-model="form.ref"
-            class="pr-2 pb-2 w-full lg:w-1/4 rounded-md"
-            label="voucher"
-            placeholder="Enter Voucher"
-          >
-            <option
-              v-for="type in custom_object"
-              :key="type.id"
-              :value="type.ref"
-            >
-              {{ type.ref }}
-            </option>
-          </select>
-          <div v-if="errors.type">{{ errors.type }}</div>
-        </div>
-
+        <!-- DOCUMENT TYPE ID -->
         <div class="p-2 mr-2 mb-2 ml-6 flex flex-wrap">
           <select
             v-model="form.type_id"
@@ -60,28 +43,40 @@
             label="voucher"
             placeholder="Enter Voucher"
           >
-            <option
-              v-for="type in custom_object"
-              :key="type.id"
-              :value="type.id"
-            >
+            <option v-for="type in doc_types" :key="type.id" :value="type.id">
               {{ type.name }}
             </option>
           </select>
           <div v-if="errors.type">{{ errors.type }}</div>
         </div>
+        <!-- REFERENCE -->
+        <!-- <div class="p-2 mr-2 mb-2 ml-6 flex flex-wrap">
+          <select
+            v-model="form.ref"
+            class="pr-2 pb-2 w-full lg:w-1/4 rounded-md"
+            label="voucher"
+            placeholder="Enter Voucher"
+          >
+            <option
+              v-for="type in accounts"
+              :key="type.id"
+              :value="type.ref"
+            >
+              {{ type.ref }}
+            </option>
+          </select>
+          <div v-if="errors.type">{{ errors.type }}</div>
+        </div> -->
 
-        <!-- <div class="p-2 mr-2 mb-2 mt-4 ml-6 flex flex-wrap">
+        <div class="p-2 mr-2 mb-2 mt-4 ml-6 flex flex-wrap">
           <input
             type="text"
             v-model="form.ref"
             class="pr-2 pb-2 w-full lg:w-1/4 rounded-md"
             label="ref"
-            readonly
-            :value="custom_object.prefix"
           />
           <div v-if="errors.ref">{{ errors.ref }}</div>
-        </div> -->
+        </div>
 
         <div class="p-2 mr-2 mb-2 mt-4 ml-6 flex flex-wrap">
           <input
@@ -99,6 +94,7 @@
             class="pr-2 pb-2 w-full rounded-md"
             label="date"
           />
+          <div v-if="errors.date">{{ errors.date }}</div>
         </div>
 
         <!-- <div class="row-auto place-items-auto"> -->
@@ -184,39 +180,14 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
+              <!-- <tr>
                 <td>
-                  <select v-model="form.group" class="rounded-md w-36">
-                    <option
-                      v-for="account in account_groups"
-                      :key="account.id"
-                      :value="account.name"
-                    >
-                      {{ account.name }}
-                    </option>
-                  </select>
-                </td>
-                <td>
-                  <input
-                    v-model="form.accounts.debit"
-                    type="text"
+                  <select
+                    v-model="form.entries.account_id"
                     class="rounded-md w-36"
-                  />
-                </td>
-                <td>
-                  <input
-                    v-model="form.accounts.credit"
-                    type="text"
-                    class="rounded-md w-36"
-                  />
-                </td>
-              </tr>
-
-              <!-- <tr v-for="(account, index) in form.accounts" :key="account.id">
-                <td>
-                  <select v-model="account.type_id" class="rounded-md w-36">
+                  >
                     <option
-                      v-for="account in account_types"
+                      v-for="account in accounts"
                       :key="account.id"
                       :value="account.id"
                     >
@@ -226,16 +197,49 @@
                 </td>
                 <td>
                   <input
-                    v-model="account.debit"
+                    v-model="form.entries.debit"
                     type="text"
                     class="rounded-md w-36"
                   />
                 </td>
                 <td>
                   <input
-                    v-model="account.credit"
+                    v-model="form.entries.credit"
                     type="text"
                     class="rounded-md w-36"
+                  />
+                </td>
+              </tr> -->
+              <!-- :disabled="!!form.accounts.debit" -->
+
+              <tr v-for="(entry, index) in form.entries" :key="entry.id">
+                <td>
+                  <select v-model="entry.account_id" class="rounded-md w-36">
+                    <option
+                      v-for="account in accounts"
+                      :key="account.id"
+                      :value="account.id"
+                    >
+                      {{ account.name }}
+                    </option>
+                  </select>
+                </td>
+                <td>
+                  <!-- @change="see($event)" -->
+                  <input
+                    v-model="entry.debit"
+                    type="text"
+                    class="rounded-md w-36"
+                    :v-bind="cal"
+                  />
+                </td>
+                <!-- @change="see($event)" -->
+                <td>
+                  <input
+                    v-model="entry.credit"
+                    type="text"
+                    class="rounded-md w-36"
+                    :v-bind="cal"
                   />
                 </td>
                 <td>
@@ -246,7 +250,7 @@
                     Delete
                   </button>
                 </td>
-              </tr> -->
+              </tr>
 
               <tr>
                 <th>Difference:</th>
@@ -256,6 +260,17 @@
 
               <tr>
                 <td>
+                  <input type="text" v-model="debit" class="rounded-md w-36" />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    v-model="credit"
+                    value="0"
+                    class="rounded-md w-36"
+                  />
+                </td>
+                <!-- <td>
                   <input type="text" class="rounded-md w-36" readonly />
                 </td>
                 <td>
@@ -263,7 +278,7 @@
                 </td>
                 <td>
                   <input type="text" class="rounded-md w-36" readonly />
-                </td>
+                </td> -->
               </tr>
             </tbody>
           </table>
@@ -279,6 +294,18 @@
           </button>
         </div>
       </form>
+      <!-- <div id="app">
+        <select v-model="firstOption">
+          <option v-for="(item, index) in list">{{ index }}</option>
+        </select>
+        <select v-model="secondOption" v-if="firstOption">
+          <option v-for="option in list[firstOption]" value="option.size">
+            {{ option.prize }}
+          </option>
+        </select>
+      </div> -->
+
+      <!-- <option v-for="option in list[firstOption]" value="option.size">{{option.prize}}</option> -->
     </div>
   </app-layout>
 </template>
@@ -299,7 +326,16 @@ export default {
   props: {
     errors: Object,
 
-    account_groups: Object,
+    companies: Object,
+    comp_first: Object,
+
+    years: Object,
+    year_first: Object,
+
+    doc_types: Object,
+    doc_type_first: Object,
+
+    accounts: Object,
     account_first: Object,
 
     // doc_types: Object,
@@ -307,35 +343,28 @@ export default {
 
     // refe: Object,
 
-    companies: Object,
-    comp_first: Object,
-
-    years: Object,
-    year_first: Object,
-
-    custom_object: Object,
+    // account_type_first: Object,
   },
 
   data() {
     return {
       form: this.$inertia.form({
-        name: null,
-        // type_id: this.account_first.id,
-        date: "",
-        ref: this.custom_object[0].id,
         company_id: this.comp_first.id,
         year_id: this.year_first.id,
-        type_id: this.custom_object.id,
-        group: this.account_first.id,
+        type_id: this.doc_type_first.id,
+        // ref: this.accounts[0].id,
+        date: "",
 
-        accounts: [
+        entries: [
           {
-            // type_id: this.account_first.id,
+            account_id: this.account_first.id,
             debit: 0,
             credit: 0,
           },
         ],
       }),
+      debit: 0,
+      credit: 0,
     };
   },
 
@@ -346,23 +375,44 @@ export default {
     },
 
     addRow() {
-      this.form.accounts.push({
-        // type_id: this.account_first.id,
+      this.form.entries.push({
+        account_id: this.account_first.id,
         debit: 0,
         credit: 0,
-
-        // ledger: "",
-        // statement: "",
-        // confirmation: "",
-        // company_id: "",
-        // account_id: "",
-        // account_id: this.accounts[0].id,
-        // year_id: "",
       });
     },
 
     deleteRow(index) {
-      this.form.accounts.splice(index, 1);
+      this.form.entries.splice(index, 1);
+    },
+
+    el: "#example",
+    data: {
+      message: "Hello",
+    },
+    computed: {
+      // a computed getter
+      reversedMessage: function () {
+        // `this` points to the vm instance
+        return this.message.split("").reverse().join("");
+      },
+    },
+
+    // mounted(){
+    //   this.debit = this.cal_debit,
+    // },
+
+    computed: {
+      cal: function () {
+        var cal_debit = 0;
+        var cal_credit = 0;
+        foreach((entry, index) in form.entries);
+        {
+          cal_debit = cal_debit + entry.debit[index];
+          cal_credit = cal_credit + entry.credit[index];
+        }
+        console.log(cal_debit);
+      },
     },
   },
 };

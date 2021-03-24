@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request as Req;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\Document;
 use App\Models\DocumentType;
+use App\Models\Entry;
 use Inertia\Inertia;
 
 class DocumentController extends Controller
@@ -44,16 +46,20 @@ class DocumentController extends Controller
         // $refe = \App\Models\DocumentType::all('prefix')->first();
         
         // $account_types = \App\Models\AccountType::all()->map->only('id','name');
-        // $account_first = \App\Models\AccountType::all('id','name')->first();
+        // $account_type_first = \App\Models\AccountType::all('id','name')->first();
 
-        $account_groups = \App\Models\AccountGroup::all()->map->only('id','name');
-        $account_first = \App\Models\AccountGroup::all('id','name')->first();
+        
+        
+        $accounts = \App\Models\Account::all()->map->only('id','name');
+        $account_first = \App\Models\Account::all('id','name')->first();
 
         $companies = \App\Models\Company::all()->map->only('id','name');
         $comp_first = \App\Models\Company::all('id','name')->first();
 
         $years = \App\Models\Year::all()->map->only('id','begin', 'end');
         $year_first = \App\Models\Year::all('id','begin', 'end')->first();
+
+        $doc_type_first = \App\Models\DocumentType::all('id','name')->first();
 
         // 'account_types' => $account_types, 'account_first' => $account_first,
         // 'doc_types' => $doc_types, 'doc_first' => $doc_first,
@@ -80,15 +86,20 @@ class DocumentController extends Controller
             // dd($custom_object);
 
         return Inertia::render('Documents/Create',[ 
-            'companies' => $companies, 'comp_first' => $comp_first,
 
-            'account_groups' => $account_groups, 'account_first' => $account_first,
 
+            // 'account_type_first' => $account_type_first,
             // 'account_types' => $doc_types, 'account_first' => $doc_first,
+
+
+            'accounts' => $accounts, 'account_first' => $account_first,
+
+            'companies' => $companies, 'comp_first' => $comp_first,
 
             'years' => $years, 'year_first' => $year_first,
 
-            'custom_object' => DocumentType::all()
+            'doc_type_first' => $doc_type_first,
+            'doc_types' => DocumentType::all()
                 ->map(function ($doc_type){
                     return [
                     'id' => $doc_type->id,
@@ -108,35 +119,56 @@ class DocumentController extends Controller
         Request::validate([
             // 'accounts.*.type_id' => ['required'],
             'type_id' => ['required'],
+            'year_id' => ['required'],
             'company_id' => ['required'],
-            'date' => ['required', 'date'],
             'ref' => ['required'],
             'description' => ['required'],
-            'year_id' => ['required'],
+            'date' => ['required', 'date'],
+
+            'entries.*.account_id' => ['required'],
+            'entries.*.debit' => ['required'],
+            'entries.*.credit' => ['required'],
 
             // 'balances.*.company_id' => ['required'],
             // 'balances.*.account_id' => ['required'],
             // 'balances.*.year_id' => ['required'],
         ]);
-        // foreach($request->accounts as $acconut){
-            Document::create([
-                // 'type_id' => $acconut['type_id'],
-                'type_id' => Request::input('type_id'),
-                'company_id' => Request::input('company_id'),
-                'description' => Request::input('description'),
-                'ref' => Request::input('ref'),
-                'date' => Request::input('date'),
-                'year_id' => Request::input('year_id'),
-                // 'date' => Request::input('date'),
-                
-                // 'ledger' => $balance['ledger'],
-                // 'statement' => $balance['statement'],
-                // 'confirmation' => $balance['confirmation'],
-                // 'company_id' => $balance['company_id'],
-                // 'account_id' => $balance['account_id'],
-                // 'year_id' => $balance['year_id'],
-            ]);
-        // }
+
+
+        DB::transaction(function() use ($request){
+
+            try{
+                $doc = Document::create([
+                    // 'type_id' => $acconut['type_id'],
+                    'type_id' => Request::input('type_id'),
+                    'company_id' => Request::input('company_id'),
+                    'description' => Request::input('description'),
+                    'ref' => Request::input('ref'),
+                    'date' => Request::input('date'),
+                    'year_id' => Request::input('year_id'),
+
+                ]);
+
+            
+                $data = $request->entries;
+                foreach($data as $entry){
+                    // foreach($request->entries as $entry){
+                    Entry::create([
+                        // dd($entry),
+                        'company_id' => $doc->company_id,
+                        // 'account_id' => Request::input('account_id'),
+                        'account_id' => $entry['account_id'],
+                        'year_id' => $doc->year_id,
+                        'document_id' => $doc->id,
+                        'debit' => $entry['debit'],
+                        'credit' => $entry['credit'],
+                    ]);
+                }
+            }catch(Exception $e){
+                return $e;
+            }
+        });
+    
 
         return Redirect::route('documents')->with('success', 'Transaction created.');
         // Request::validate([
