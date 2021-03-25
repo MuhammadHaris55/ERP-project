@@ -229,17 +229,19 @@
                   <input
                     v-model="entry.debit"
                     type="text"
+                    @change="debitchange(index)"
                     class="rounded-md w-36"
-                    :v-bind="cal"
+                    :v-bind="total"
                   />
                 </td>
-                <!-- @change="see($event)" -->
                 <td>
                   <input
                     v-model="entry.credit"
                     type="text"
+                    @change="creditchange(index)"
                     class="rounded-md w-36"
-                    :v-bind="cal"
+                    :v-bind="total"
+                    @mouseleave="total"
                   />
                 </td>
                 <td>
@@ -260,13 +262,28 @@
 
               <tr>
                 <td>
-                  <input type="text" v-model="debit" class="rounded-md w-36" />
+                  <input
+                    type="text"
+                    v-model="difference"
+                    v-bind="total"
+                    class="rounded-md w-36"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    v-model="debit"
+                    v-bind="total"
+                    @change="difference"
+                    class="rounded-md w-36"
+                  />
                 </td>
                 <td>
                   <input
                     type="text"
                     v-model="credit"
-                    value="0"
+                    v-bind="total"
+                    @change="difference"
                     class="rounded-md w-36"
                   />
                 </td>
@@ -348,6 +365,11 @@ export default {
 
   data() {
     return {
+      difference: null,
+      credit: null,
+      debit: null,
+      total: null,
+      error: null,
       form: this.$inertia.form({
         company_id: this.comp_first.id,
         year_id: this.year_first.id,
@@ -363,8 +385,6 @@ export default {
           },
         ],
       }),
-      debit: 0,
-      credit: 0,
     };
   },
 
@@ -374,12 +394,80 @@ export default {
       this.$inertia.post(route("documents.store"), this.form);
     },
 
+    // difference() {
+    //   let diff = 0;
+    //   diff = parseInt(this.debit) + parseInt(this.credit);
+    //   this.difference = diff;
+    // },
+
+    debitchange(index) {
+      let a = this.form.entries[index];
+      a.credit = 0;
+      console.log(a.debit);
+
+      let dtotal = 0;
+      for (var i = 0; i < this.form.entries.length; i++) {
+        dtotal = dtotal + parseInt(this.form.entries[i].debit);
+        console.log(dtotal + "  ");
+      }
+      console.log("//" + dtotal);
+      this.debit = dtotal;
+
+      //  FOR DIFFERENCE OF DEBIT CREDIT
+      let diff = 0;
+      diff = parseInt(this.debit) + parseInt(this.credit);
+      this.difference = parseInt(diff);
+    },
+
+    creditchange(index) {
+      let b = this.form.entries[index];
+      b.debit = 0;
+      console.log(b.credit);
+
+      let dtotal = 0;
+      for (var i = 0; i < this.form.entries.length; i++) {
+        dtotal = dtotal + parseInt(this.form.entries[i].credit);
+        console.log(dtotal + "  ");
+      }
+      console.log("//" + dtotal);
+      this.credit = dtotal;
+
+      //  FOR DIFFERENCE OF DEBIT CREDIT
+      let diff = 0;
+      let d = parseInt(this.debit);
+      let c = parseInt(this.credit);
+      // diff = parseInt(this.debit) + parseInt(this.credit);
+      diff = parseInt(this.debit) + parseInt(this.credit);
+      this.difference = diff;
+    },
+
+    // computed: {
+    //   total: function () {
+    //     let total_debit = 0;
+    //     let total_credit = 0;
+
+    //     for (var i = 0; i < count(this.form.entries); i++) {
+    //       if (this.form.entries[i].debit) {
+    //         total_debit += this.form.entries[i].debit;
+    //       }
+    //       if (this.form.entries[i].credit) {
+    //         total_credit += this.form.entries[i].credit;
+    //       }
+    //     }
+    //     console.log(total_debit);
+    //     this.debit.value = total_debit;
+    //     debit = total_debit;
+    //   },
+    // },
+
     addRow() {
       this.form.entries.push({
         account_id: this.account_first.id,
         debit: 0,
         credit: 0,
       });
+      count += 1;
+      console.log(count);
     },
 
     deleteRow(index) {

@@ -18151,6 +18151,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   data: function data() {
     return {
+      difference: null,
+      credit: null,
+      debit: null,
+      total: null,
+      error: null,
       form: this.$inertia.form({
         company_id: this.comp_first.id,
         year_id: this.year_first.id,
@@ -18162,9 +18167,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           debit: 0,
           credit: 0
         }]
-      }),
-      debit: 0,
-      credit: 0
+      })
     };
   },
   methods: _defineProperty({
@@ -18172,12 +18175,75 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.form.date = date_fns_format__WEBPACK_IMPORTED_MODULE_3___default()(this.form.date, "yyyy-MM-dd");
       this.$inertia.post(route("documents.store"), this.form);
     },
+    // difference() {
+    //   let diff = 0;
+    //   diff = parseInt(this.debit) + parseInt(this.credit);
+    //   this.difference = diff;
+    // },
+    debitchange: function debitchange(index) {
+      var a = this.form.entries[index];
+      a.credit = 0;
+      console.log(a.debit);
+      var dtotal = 0;
+
+      for (var i = 0; i < this.form.entries.length; i++) {
+        dtotal = dtotal + parseInt(this.form.entries[i].debit);
+        console.log(dtotal + "  ");
+      }
+
+      console.log("//" + dtotal);
+      this.debit = dtotal; //  FOR DIFFERENCE OF DEBIT CREDIT
+
+      var diff = 0;
+      diff = parseInt(this.debit) + parseInt(this.credit);
+      this.difference = parseInt(diff);
+    },
+    creditchange: function creditchange(index) {
+      var b = this.form.entries[index];
+      b.debit = 0;
+      console.log(b.credit);
+      var dtotal = 0;
+
+      for (var i = 0; i < this.form.entries.length; i++) {
+        dtotal = dtotal + parseInt(this.form.entries[i].credit);
+        console.log(dtotal + "  ");
+      }
+
+      console.log("//" + dtotal);
+      this.credit = dtotal; //  FOR DIFFERENCE OF DEBIT CREDIT
+
+      var diff = 0;
+      var d = parseInt(this.debit);
+      var c = parseInt(this.credit); // diff = parseInt(this.debit) + parseInt(this.credit);
+
+      diff = parseInt(this.debit) + parseInt(this.credit);
+      this.difference = diff;
+    },
+    // computed: {
+    //   total: function () {
+    //     let total_debit = 0;
+    //     let total_credit = 0;
+    //     for (var i = 0; i < count(this.form.entries); i++) {
+    //       if (this.form.entries[i].debit) {
+    //         total_debit += this.form.entries[i].debit;
+    //       }
+    //       if (this.form.entries[i].credit) {
+    //         total_credit += this.form.entries[i].credit;
+    //       }
+    //     }
+    //     console.log(total_debit);
+    //     this.debit.value = total_debit;
+    //     debit = total_debit;
+    //   },
+    // },
     addRow: function addRow() {
       this.form.entries.push({
         account_id: this.account_first.id,
         debit: 0,
         credit: 0
       });
+      count += 1;
+      console.log(count);
     },
     deleteRow: function deleteRow(index) {
       this.form.entries.splice(index, 1);
@@ -24230,7 +24296,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("form", {
-        onSubmit: _cache[10] || (_cache[10] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
+        onSubmit: _cache[14] || (_cache[14] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
           return $options.submit && $options.submit.apply($options, arguments);
         }, ["prevent"]))
       }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" COMPANY ID "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("select", {
@@ -24357,20 +24423,29 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             return entry.debit = $event;
           },
           type: "text",
+          onChange: function onChange($event) {
+            return $options.debitchange(index);
+          },
           "class": "rounded-md w-36",
-          "v-bind": _ctx.cal
-        }, null, 8
-        /* PROPS */
-        , ["onUpdate:modelValue", "v-bind"]), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, entry.debit]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" @change=\"see($event)\" "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+          "v-bind": $data.total
+        }, null, 40
+        /* PROPS, HYDRATE_EVENTS */
+        , ["onUpdate:modelValue", "onChange", "v-bind"]), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, entry.debit]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
           "onUpdate:modelValue": function onUpdateModelValue($event) {
             return entry.credit = $event;
           },
           type: "text",
+          onChange: function onChange($event) {
+            return $options.creditchange(index);
+          },
           "class": "rounded-md w-36",
-          "v-bind": _ctx.cal
-        }, null, 8
-        /* PROPS */
-        , ["onUpdate:modelValue", "v-bind"]), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, entry.credit]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
+          "v-bind": $data.total,
+          onMouseleave: _cache[8] || (_cache[8] = function () {
+            return $data.total && $data.total.apply($data, arguments);
+          })
+        }, null, 40
+        /* PROPS, HYDRATE_EVENTS */
+        , ["onUpdate:modelValue", "onChange", "v-bind"]), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, entry.credit]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
           onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
             return $options.deleteRow(index);
           }, ["prevent"]),
@@ -24380,23 +24455,39 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         , ["onClick"])])]);
       }), 128
       /* KEYED_FRAGMENT */
-      )), _hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
-        type: "text",
-        "onUpdate:modelValue": _cache[8] || (_cache[8] = function ($event) {
-          return $data.debit = $event;
-        }),
-        "class": "rounded-md w-36"
-      }, null, 512
-      /* NEED_PATCH */
-      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.debit]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+      )), _hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", (0,vue__WEBPACK_IMPORTED_MODULE_0__.mergeProps)({
         type: "text",
         "onUpdate:modelValue": _cache[9] || (_cache[9] = function ($event) {
-          return $data.credit = $event;
-        }),
-        value: "0",
+          return $data.difference = $event;
+        })
+      }, $data.total, {
         "class": "rounded-md w-36"
-      }, null, 512
-      /* NEED_PATCH */
+      }), null, 16
+      /* FULL_PROPS */
+      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.difference]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", (0,vue__WEBPACK_IMPORTED_MODULE_0__.mergeProps)({
+        type: "text",
+        "onUpdate:modelValue": _cache[10] || (_cache[10] = function ($event) {
+          return $data.debit = $event;
+        })
+      }, $data.total, {
+        onChange: _cache[11] || (_cache[11] = function () {
+          return $data.difference && $data.difference.apply($data, arguments);
+        }),
+        "class": "rounded-md w-36"
+      }), null, 16
+      /* FULL_PROPS */
+      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.debit]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", (0,vue__WEBPACK_IMPORTED_MODULE_0__.mergeProps)({
+        type: "text",
+        "onUpdate:modelValue": _cache[12] || (_cache[12] = function ($event) {
+          return $data.credit = $event;
+        })
+      }, $data.total, {
+        onChange: _cache[13] || (_cache[13] = function () {
+          return $data.difference && $data.difference.apply($data, arguments);
+        }),
+        "class": "rounded-md w-36"
+      }), null, 16
+      /* FULL_PROPS */
       ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.credit]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td>\n                  <input type=\"text\" class=\"rounded-md w-36\" readonly />\n                </td>\n                <td>\n                  <input type=\"text\" class=\"rounded-md w-36\" readonly />\n                </td>\n                <td>\n                  <input type=\"text\" class=\"rounded-md w-36\" readonly />\n                </td> ")])])])]), _hoisted_20], 32
       /* HYDRATE_EVENTS */
       ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div id=\"app\">\n        <select v-model=\"firstOption\">\n          <option v-for=\"(item, index) in list\">{{ index }}</option>\n        </select>\n        <select v-model=\"secondOption\" v-if=\"firstOption\">\n          <option v-for=\"option in list[firstOption]\" value=\"option.size\">\n            {{ option.prize }}\n          </option>\n        </select>\n      </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <option v-for=\"option in list[firstOption]\" value=\"option.size\">{{option.prize}}</option> ")])];
