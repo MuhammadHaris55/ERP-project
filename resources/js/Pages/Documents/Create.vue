@@ -97,71 +97,6 @@
           <div v-if="errors.date">{{ errors.date }}</div>
         </div>
 
-        <!-- <div class="row-auto place-items-auto"> -->
-        <!-- <div class="p-2 mr-2 mb-2 ml-6 flex flex-wrap">
-            <select
-              v-model="form.type_id"
-              class="pr-2 pb-2 w-full lg:w-1/4 rounded-md"
-              label="voucher"
-              placeholder="Enter Voucher"
-              id="source"
-            >
-              <option
-                v-for="type in account_types"
-                :key="type.id"
-                :value="type.id"
-              >
-                {{ type.name }}
-              </option>
-            </select>
-            <div v-if="errors.type">{{ errors.type }}</div>
-          </div> -->
-
-        <!-- <div class="p-2 mr-2 mb-2 mt-4 ml-6 flex flex-wrap">
-            <input
-              type="text"
-              class="pr-2 pb-2 w-full lg:w-1/4 rounded-md"
-              label="ref"
-            />
-            <div v-if="errors.ref">{{ errors.ref }}</div>
-          </div>
-
-          <div class="p-2 mr-2 mb-2 mt-4 ml-6 flex flex-wrap">
-            <input
-              type="text"
-              v-model="credit"
-              class="pr-2 pb-2 w-full lg:w-1/4 rounded-md"
-              label="ref"
-            />
-            <div v-if="errors.ref">{{ errors.ref }}</div>
-          </div> -->
-        <!-- <button
-            class="border bg-indigo-300 rounded-xl px-4 py-2 m-4"
-            @click.prevent="addRow"
-          >
-            Add row
-          </button>
-          <div v-if="isError">{{ firstError }}</div> -->
-
-        <!-- </div> -->
-
-        <!-- <div
-          class="px-4 py-2 bg-gray-100 border-t border-gray-200 flex justify-start items-center"
-        >
-          <button
-            class="border bg-indigo-300 rounded-xl px-4 py-2 ml-4 mt-4"
-            type="submit"
-          >
-            Create Transaction
-          </button>
-          <button
-            class="border bg-indigo-300 rounded-xl px-4 py-2 m-4"
-            @click.prevent="addRow"
-          >
-            Add row
-          </button>
-        </div> -->
-
         <!-- APNA CODE -->
         <div class="panel-body">
           <button
@@ -180,38 +115,6 @@
               </tr>
             </thead>
             <tbody>
-              <!-- <tr>
-                <td>
-                  <select
-                    v-model="form.entries.account_id"
-                    class="rounded-md w-36"
-                  >
-                    <option
-                      v-for="account in accounts"
-                      :key="account.id"
-                      :value="account.id"
-                    >
-                      {{ account.name }}
-                    </option>
-                  </select>
-                </td>
-                <td>
-                  <input
-                    v-model="form.entries.debit"
-                    type="text"
-                    class="rounded-md w-36"
-                  />
-                </td>
-                <td>
-                  <input
-                    v-model="form.entries.credit"
-                    type="text"
-                    class="rounded-md w-36"
-                  />
-                </td>
-              </tr> -->
-              <!-- :disabled="!!form.accounts.debit" -->
-
               <tr v-for="(entry, index) in form.entries" :key="entry.id">
                 <td>
                   <select v-model="entry.account_id" class="rounded-md w-36">
@@ -231,7 +134,6 @@
                     type="text"
                     @change="debitchange(index)"
                     class="rounded-md w-36"
-                    :v-bind="total"
                   />
                 </td>
                 <td>
@@ -240,8 +142,6 @@
                     type="text"
                     @change="creditchange(index)"
                     class="rounded-md w-36"
-                    :v-bind="total"
-                    @mouseleave="total"
                   />
                 </td>
                 <td>
@@ -265,7 +165,7 @@
                   <input
                     type="text"
                     v-model="difference"
-                    v-bind="total"
+                    readonly
                     class="rounded-md w-36"
                   />
                 </td>
@@ -273,8 +173,7 @@
                   <input
                     type="text"
                     v-model="debit"
-                    v-bind="total"
-                    @change="difference"
+                    readonly
                     class="rounded-md w-36"
                   />
                 </td>
@@ -282,9 +181,16 @@
                   <input
                     type="text"
                     v-model="credit"
-                    v-bind="total"
-                    @change="difference"
+                    readonly
                     class="rounded-md w-36"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    v-model="check"
+                    class="rounded-md w-36"
+                    label="myref"
                   />
                 </td>
                 <!-- <td>
@@ -369,12 +275,14 @@ export default {
       credit: null,
       debit: null,
       total: null,
+      check: null,
       error: null,
       form: this.$inertia.form({
         company_id: this.comp_first.id,
         year_id: this.year_first.id,
         type_id: this.doc_type_first.id,
-        // ref: this.accounts[0].id,
+        // ref: this.doc_type_first.name,
+        ref: "",
         date: "",
 
         entries: [
@@ -390,75 +298,45 @@ export default {
 
   methods: {
     submit() {
-      this.form.date = format(this.form.date, "yyyy-MM-dd");
-      this.$inertia.post(route("documents.store"), this.form);
+      if (this.difference === 0) {
+        this.form.date = format(this.form.date, "yyyy-MM-dd");
+        this.$inertia.post(route("documents.store"), this.form);
+      } else {
+        alert("Entry is not equal");
+      }
     },
-
-    // difference() {
-    //   let diff = 0;
-    //   diff = parseInt(this.debit) + parseInt(this.credit);
-    //   this.difference = diff;
-    // },
 
     debitchange(index) {
       let a = this.form.entries[index];
       a.credit = 0;
       console.log(a.debit);
 
-      let dtotal = 0;
-      for (var i = 0; i < this.form.entries.length; i++) {
-        dtotal = dtotal + parseInt(this.form.entries[i].debit);
-        console.log(dtotal + "  ");
-      }
-      console.log("//" + dtotal);
-      this.debit = dtotal;
-
-      //  FOR DIFFERENCE OF DEBIT CREDIT
-      let diff = 0;
-      diff = parseInt(this.debit) + parseInt(this.credit);
-      this.difference = parseInt(diff);
+      this.tdebit();
+      this.tcredit();
     },
-
     creditchange(index) {
       let b = this.form.entries[index];
       b.debit = 0;
       console.log(b.credit);
 
+      this.tcredit();
+      this.tdebit();
+    },
+
+    tcredit() {
       let dtotal = 0;
       for (var i = 0; i < this.form.entries.length; i++) {
         dtotal = dtotal + parseInt(this.form.entries[i].credit);
-        console.log(dtotal + "  ");
       }
-      console.log("//" + dtotal);
       this.credit = dtotal;
-
-      //  FOR DIFFERENCE OF DEBIT CREDIT
-      let diff = 0;
-      let d = parseInt(this.debit);
-      let c = parseInt(this.credit);
-      // diff = parseInt(this.debit) + parseInt(this.credit);
-      diff = parseInt(this.debit) + parseInt(this.credit);
-      this.difference = diff;
     },
-
-    // computed: {
-    //   total: function () {
-    //     let total_debit = 0;
-    //     let total_credit = 0;
-
-    //     for (var i = 0; i < count(this.form.entries); i++) {
-    //       if (this.form.entries[i].debit) {
-    //         total_debit += this.form.entries[i].debit;
-    //       }
-    //       if (this.form.entries[i].credit) {
-    //         total_credit += this.form.entries[i].credit;
-    //       }
-    //     }
-    //     console.log(total_debit);
-    //     this.debit.value = total_debit;
-    //     debit = total_debit;
-    //   },
-    // },
+    tdebit() {
+      let dtotal = 0;
+      for (var i = 0; i < this.form.entries.length; i++) {
+        dtotal = dtotal + parseInt(this.form.entries[i].debit);
+      }
+      this.debit = dtotal;
+    },
 
     addRow() {
       this.form.entries.push({
@@ -469,38 +347,56 @@ export default {
       count += 1;
       console.log(count);
     },
-
     deleteRow(index) {
       this.form.entries.splice(index, 1);
     },
 
-    el: "#example",
-    data: {
-      message: "Hello",
-    },
-    computed: {
-      // a computed getter
-      reversedMessage: function () {
-        // `this` points to the vm instance
-        return this.message.split("").reverse().join("");
-      },
-    },
-
-    // mounted(){
-    //   this.debit = this.cal_debit,
+    // el: "#example",
+    // data: {
+    //   message: "Hello",
     // },
+    // computed: {
+    //   // a computed getter
+    //   reversedMessage: function () {
+    //     // `this` points to the vm instance
+    //     return this.message.split("").reverse().join("");
+    //   },
+    // },
+  },
+  watch: {
+    //  FOR DIFFERENCE OF DEBIT CREDIT
+    debit: function () {
+      let diff = 0;
+      if (this.debit == null) {
+        this.debit = 0;
+      }
+      diff = parseInt(this.debit) - parseInt(this.credit);
+      this.difference = diff;
+    },
+    credit: function () {
+      let diff = 0;
+      console.log(this.credit);
 
-    computed: {
-      cal: function () {
-        var cal_debit = 0;
-        var cal_credit = 0;
-        foreach((entry, index) in form.entries);
-        {
-          cal_debit = cal_debit + entry.debit[index];
-          cal_credit = cal_credit + entry.credit[index];
-        }
-        console.log(cal_debit);
-      },
+      if (this.credit == null) {
+        this.credit = 0;
+      }
+      diff = parseInt(this.debit) - parseInt(this.credit);
+      this.difference = diff;
+    },
+    check: function () {
+      let a = this.check;
+      console.log(a);
+      this.form.ref = a;
+    },
+
+    balance: function () {
+      let dtotal = 0;
+      for (var i = 0; i < this.form.entries.length; i++) {
+        dtotal = dtotal + parseInt(this.form.entries[i].credit);
+        console.log(dtotal + "  ");
+      }
+      console.log("//" + dtotal);
+      this.credit = dtotal;
     },
   },
 };
