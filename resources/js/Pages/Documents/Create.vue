@@ -299,7 +299,7 @@ export default {
   methods: {
     submit() {
       if (this.difference === 0) {
-        this.form.date = format(this.form.date, "yyyy-MM-dd");
+        // this.form.date = format(this.form.date, "yyyy-MM-dd");
         this.$inertia.post(route("documents.store"), this.form);
       } else {
         alert("Entry is not equal");
@@ -385,8 +385,21 @@ export default {
     },
     check: function () {
       let a = this.check;
-      console.log(a);
-      this.form.ref = a;
+      // let b = a.split("").reverse().join("");
+      let b = a.split(" ");
+      let c = b[0].split("");
+      console.log(c);
+
+      for (let i = 0; i < b.length; i++) {
+        c[i] = b[i].split("");
+        console.log(c[i]);
+      }
+      // foreach(word in b);
+      // {
+      //   console.log(word);
+      // }
+
+      this.form.ref = b[0];
     },
 
     balance: function () {

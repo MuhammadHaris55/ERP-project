@@ -64,12 +64,13 @@ Route::delete('accountgroups/{accountgroup}', [AccountGroupController::class, 'd
     ->middleware('auth');
 
 
-    //my code
+//USER
     Route::get('users', [UserController::class, 'index'])
     ->name('users')
     ->middleware('auth');
 
 
+//COMPANIES
     Route::get('companies', [CompanyController::class, 'index'])
     ->name('companies')
     ->middleware('auth');
@@ -99,7 +100,7 @@ Route::delete('companies/{company}', [CompanyController::class, 'destroy'])
     ->middleware('auth');
 
 
-
+//ACCOUNTS -------------------------------------------
     Route::get('accounts', [AccountController::class, 'index'])
     ->name('accounts')
     ->middleware('auth');
@@ -108,8 +109,8 @@ Route::delete('companies/{company}', [CompanyController::class, 'destroy'])
     ->name('accounts.create')
     ->middleware('auth');
 
-    // Route::get('accountgroups/{accountgroup}', [AccountGroupController::class, 'show'])
-    // ->name('accountgroups.show')
+    // Route::get('accounts/{account}', [AccountController::class, 'show'])
+    // ->name('accounts.show')
     // ->middleware('auth');
 
     Route::post('accounts', [AccountController::class, 'store'])
@@ -129,6 +130,7 @@ Route::delete('accounts/{account}', [AccountController::class, 'destroy'])
     ->middleware('auth');
 
 
+//DOCUMENT TYPES ...... VOUCHER ------------------------------
     Route::get('documenttypes', [DocumentTypeController::class, 'index'])
     ->name('documenttypes')
     ->middleware('auth');
@@ -137,8 +139,8 @@ Route::delete('accounts/{account}', [AccountController::class, 'destroy'])
     ->name('documenttypes.create')
     ->middleware('auth');
 
-//     // Route::get('accountgroups/{accountgroup}', [AccountGroupController::class, 'show'])
-//     // ->name('accountgroups.show')
+//     // Route::get('documenttypes/{documenttype}', [DocumentTypeController::class, 'show'])
+//     // ->name('documenttypes.show')
 //     // ->middleware('auth');
 
     Route::post('documenttypes', [DocumentTypeController::class, 'store'])
@@ -158,6 +160,7 @@ Route::delete('documenttypes/{documenttype}', [DocumentTypeController::class, 'd
     ->middleware('auth');
 
     
+//DOCUMENT ....TRANSACTION + ENTRIES-------------------------------------------
     Route::get('documents', [DocumentController::class, 'index'])
     ->name('documents')
     ->middleware('auth');
@@ -166,20 +169,20 @@ Route::delete('documenttypes/{documenttype}', [DocumentTypeController::class, 'd
     ->name('documents.create')
     ->middleware('auth');
 
-// //     // Route::get('accountgroups/{accountgroup}', [AccountGroupController::class, 'show'])
-// //     // ->name('accountgroups.show')
+// //     // Route::get('documents/{document}', [DocumentController::class, 'show'])
+// //     // ->name('documents.show')
 // //     // ->middleware('auth');
 
     Route::post('documents', [DocumentController::class, 'store'])
     ->name('documents.store')
     ->middleware('auth');
 
-// Route::get('documenttypes/{documenttype}/edit', [DocumentTypeController::class, 'edit'])
-//     ->name('documenttypes.edit')
+// Route::get('documents/{document}/edit', [DocumentController::class, 'edit'])
+//     ->name('documents.edit')
 //     ->middleware('auth');
 
-// Route::put('documenttypes/{documenttype}', [DocumentTypeController::class, 'update'])
-//     ->name('documenttypes.update')
+// Route::put('documents/{document}', [DocumentController::class, 'update'])
+//     ->name('documents.update')
 //     ->middleware('auth');
 
 Route::delete('documents/{document}', [DocumentController::class, 'destroy'])
@@ -187,7 +190,7 @@ Route::delete('documents/{document}', [DocumentController::class, 'destroy'])
     ->middleware('auth');
 
 
-
+//YEARS ------------------------------------------------------
     Route::get('years', [YearController::class, 'index'])
     ->name('years')
     ->middleware('auth');
@@ -196,8 +199,8 @@ Route::delete('documents/{document}', [DocumentController::class, 'destroy'])
     ->name('years.create')
     ->middleware('auth');
 
-// //     // Route::get('accountgroups/{accountgroup}', [AccountGroupController::class, 'show'])
-// //     // ->name('accountgroups.show')
+// //     // Route::get('years/{year}', [YearController::class, 'show'])
+// //     // ->name('years.show')
 // //     // ->middleware('auth');
 
     Route::post('years', [YearController::class, 'store'])

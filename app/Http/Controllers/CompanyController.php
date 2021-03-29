@@ -9,7 +9,6 @@ use Inertia\Inertia;
 
 class CompanyController extends Controller
 {
-    //
     public function index()
     {
         $data = Company::all();
@@ -18,7 +17,6 @@ class CompanyController extends Controller
 
     public function create()
     {
-        // $types = \App\Models\Company::all()->map->only('id','name');
         $companies = \App\Models\Company::all();
         $comp_first = \App\Models\Company::all('id','name')->first();
         $fiscals = ['June', 'March', 'September', 'December'];
@@ -30,7 +28,6 @@ class CompanyController extends Controller
     public function store()
     {
         Request::validate([
-                    // 'type' => ['required'],
                     'name' => ['required'],
                     'address' => ['nullable'],
                     'email' => ['nullable'],
@@ -39,31 +36,15 @@ class CompanyController extends Controller
                     'fiscal' => ['required'],
                     'incorp' => ['nullable'],
                 ]);
-
         Company::create([
-            // 'type_id' => Request::input('type'),
             'name' => Request::input('name'),
             'address' => Request::input('address'),
             'email' => Request::input('email'),
             'website' => Request::input('website'),
             'phone' => Request::input('phone'),
             'fiscal' => Request::input('fiscal'),
-            'incorp' => Request::input('incorp'),
-            // 'company_id' => 1,
-            
+            'incorp' => Request::input('incorp'),            
         ]);                
-
-    //     Request::validate([
-    //         'type' => ['required'],
-    //         'name' => ['required'],
-    //     ]);
-
-    //     AccountGroup::create([
-    //         'type_id' => Request::input('type'),
-    //         'name' => Request::input('name'),
-    //         'company_id' => 1,
-    //     ]);
-
         return Redirect::route('companies')->with('success', 'Company created.');
     }
 
@@ -84,9 +65,6 @@ class CompanyController extends Controller
                 'phone' => $company->phone,
                 'fiscal' => $company->fiscal,
                 'incorp' => $company->incorp,
-
-                // 'type_id' => $accountgroup->type_id,
-                // 'name' => $accountgroup->name,
             ],
             'companies' => $companies,
         ]);
@@ -94,12 +72,7 @@ class CompanyController extends Controller
 
     public function update(Company $company)
     {
-        // Request::validate([
-        //     'type' => ['required'],
-        //     'name' => ['required'],
-        // ]);
         Request::validate([
-            // 'type' => ['required'],
             'name' => ['required'],
             'address' => ['nullable'],
             'email' => ['nullable'],
@@ -116,9 +89,6 @@ class CompanyController extends Controller
         $company->phone = Request::input('phone');
         $company->fiscal = Request::input('fiscal');
         $company->incorp = Request::input('incorp');
-
-        // $company->type_id = Request::input('type');
-        // $company->name = Request::input('name');
         $company->save();
 
         return Redirect::route('companies')->with('success', 'Company updated.');

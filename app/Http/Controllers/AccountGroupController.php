@@ -11,9 +11,6 @@ class AccountGroupController extends Controller
 {
     public function index()
     {
-        // $data = AccountGroup::all();
-        // return Inertia::render('AccountGroups/Index', ['data' => $data]);
-
         return Inertia::render('AccountGroups/Index', [
             'data' => AccountGroup::all()
                 ->map(function ($accountgroup){
@@ -25,7 +22,6 @@ class AccountGroupController extends Controller
                     ];
                 }), 
         ]);
-
     }
 
     public function create()
@@ -46,9 +42,7 @@ class AccountGroupController extends Controller
             'type' => ['required'],
             'name' => ['required'],
             'company' => ['required'],
-
         ]);
-
         AccountGroup::create([
             'type_id' => Request::input('type'),
             'name' => Request::input('name'),
@@ -84,9 +78,7 @@ class AccountGroupController extends Controller
             'type' => ['required'],
             'name' => ['required'],
             'company' => ['required'],
-
         ]);
-
         $accountgroup->type_id = Request::input('type');
         $accountgroup->name = Request::input('name');
         $accountgroup->company_id = Request::input('company');

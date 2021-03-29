@@ -18173,7 +18173,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     submit: function submit() {
       if (this.difference === 0) {
-        this.form.date = date_fns_format__WEBPACK_IMPORTED_MODULE_3___default()(this.form.date, "yyyy-MM-dd");
+        // this.form.date = format(this.form.date, "yyyy-MM-dd");
         this.$inertia.post(route("documents.store"), this.form);
       } else {
         alert("Entry is not equal");
@@ -18259,9 +18259,22 @@ __webpack_require__.r(__webpack_exports__);
       this.difference = diff;
     },
     check: function check() {
-      var a = this.check;
-      console.log(a);
-      this.form.ref = a;
+      var a = this.check; // let b = a.split("").reverse().join("");
+
+      var b = a.split(" ");
+      var c = b[0].split("");
+      console.log(c);
+
+      for (var i = 0; i < b.length; i++) {
+        c[i] = b[i].split("");
+        console.log(c[i]);
+      } // foreach(word in b);
+      // {
+      //   console.log(word);
+      // }
+
+
+      this.form.ref = b[0];
     },
     balance: function balance() {
       var dtotal = 0;

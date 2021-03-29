@@ -10,15 +10,12 @@ use App\Models\Document;
 use App\Models\DocumentType;
 use App\Models\Entry;
 use Inertia\Inertia;
+use Carbon\Carbon;
 
 class DocumentController extends Controller
 {
-    //
     public function index()
     {
-        // $data = AccountGroup::all();
-        // return Inertia::render('AccountGroups/Index', ['data' => $data]);
-
         return Inertia::render('Documents/Index', [
             'data' => Document::all()
                 ->map(function ($document){
@@ -29,27 +26,13 @@ class DocumentController extends Controller
                         'type_id' => $document->type_id,
                         'company_id' => $document->company_id,
                         'year_id' => $document->year_id,
-                        // 'type_name' => $document->accountType->name,
                     ];
                 }), 
         ]);
-
     }
 
     public function create()
     {
-        // $doc_types = \App\Models\DocumentType::all()->map->only('id','name','prefix');
-        // $doc_first = \App\Models\DocumentType::all('id','name','prefix')->first();
-
-        // $doc_types = \App\Models\DocumentType::all();
-        // $doc_first = \App\Models\DocumentType::all()->first();
-        // $refe = \App\Models\DocumentType::all('prefix')->first();
-        
-        // $account_types = \App\Models\AccountType::all()->map->only('id','name');
-        // $account_type_first = \App\Models\AccountType::all('id','name')->first();
-
-        
-        
         $accounts = \App\Models\Account::all()->map->only('id','name');
         $account_first = \App\Models\Account::all('id','name')->first();
 
@@ -60,44 +43,20 @@ class DocumentController extends Controller
         $year_first = \App\Models\Year::all('id','begin', 'end')->first();
 
         $doc_type_first = \App\Models\DocumentType::all('id','name')->first();
-
-        // 'account_types' => $account_types, 'account_first' => $account_first,
-        // 'doc_types' => $doc_types, 'doc_first' => $doc_first,
-        // 'refe' => $refe,
-        // 'companies' => $companies, 'comp_first' => $comp_first,
-       
-        // return Inertia::render('Documents/Index', [
-        //     'data' => Document::all()
-        //         ->map(function ($document){
-        //             return [
-        //                 'id' => $document->id,
-        //                 'ref' => $document->ref,
-        //                 'description' => $document->description,
-        //                 'type_id' => $document->type_id,
-        //                 'company_id' => $document->company_id,
-        //                 'year_id' => $document->year_id,
-        //                 'type_name' => $document->accountType->name,
-        //             ];
-        //         }), 
-        // ]);
-
-        // 'custom_object' = DocumentType::all()
-        
-            // dd($custom_object);
+//FUNCTION FOR REFERENCE GENERATOR       
+            // $str = "My name is Muhammad Haris";
+            // $stri = explode(" ",$str);
+            // print_r($str);
+            // dd($stri);
+            // $second;
+            // foreach($word in $stri){
+            //     $second = explode("", $word);
+            // }
 
         return Inertia::render('Documents/Create',[ 
-
-
-            // 'account_type_first' => $account_type_first,
-            // 'account_types' => $doc_types, 'account_first' => $doc_first,
-
-
             'accounts' => $accounts, 'account_first' => $account_first,
-
             'companies' => $companies, 'comp_first' => $comp_first,
-
             'years' => $years, 'year_first' => $year_first,
-
             'doc_type_first' => $doc_type_first,
             'doc_types' => DocumentType::all()
                 ->map(function ($doc_type){
@@ -105,19 +64,14 @@ class DocumentController extends Controller
                     'id' => $doc_type->id,
                     'name' => $doc_type->name,
                     'ref' => $doc_type->prefix. "/" .$doc_type->timestamps,
-                    // 'company_id' => $doc_type->company_id,
-                    // 'company_name' => $doc_type->company->name,
                 ];
-            }),
-            
-
+            }),            
             ]);
         }
 
     public function store(Req $request)
     {
         Request::validate([
-            // 'accounts.*.type_id' => ['required'],
             'type_id' => ['required'],
             'year_id' => ['required'],
             'company_id' => ['required'],
@@ -128,35 +82,25 @@ class DocumentController extends Controller
             'entries.*.account_id' => ['required'],
             'entries.*.debit' => ['required'],
             'entries.*.credit' => ['required'],
-
-            // 'balances.*.company_id' => ['required'],
-            // 'balances.*.account_id' => ['required'],
-            // 'balances.*.year_id' => ['required'],
         ]);
 
-
         DB::transaction(function() use ($request){
-
+        
+            $date = new Carbon($request->date);
             try{
                 $doc = Document::create([
-                    // 'type_id' => $acconut['type_id'],
                     'type_id' => Request::input('type_id'),
                     'company_id' => Request::input('company_id'),
                     'description' => Request::input('description'),
                     'ref' => Request::input('ref'),
-                    'date' => Request::input('date'),
+                    'date' => $date->format('Y-m-d'),
                     'year_id' => Request::input('year_id'),
-
                 ]);
 
-            
                 $data = $request->entries;
                 foreach($data as $entry){
-                    // foreach($request->entries as $entry){
                     Entry::create([
-                        // dd($entry),
                         'company_id' => $doc->company_id,
-                        // 'account_id' => Request::input('account_id'),
                         'account_id' => $entry['account_id'],
                         'year_id' => $doc->year_id,
                         'document_id' => $doc->id,
@@ -168,23 +112,8 @@ class DocumentController extends Controller
                 return $e;
             }
         });
-    
 
         return Redirect::route('documents')->with('success', 'Transaction created.');
-        // Request::validate([
-        //     'type' => ['required'],
-        //     'name' => ['required'],
-        //     'company' => ['required'],
-
-        // ]);
-
-        // AccountGroup::create([
-        //     'type_id' => Request::input('type'),
-        //     'name' => Request::input('name'),
-        //     'company_id' => Request::input('company'),
-        // ]);
-
-        // return Redirect::route('accountgroups')->with('success', 'Account Group created.');
     }
 
     public function show(AccountGroup $accountgroup)

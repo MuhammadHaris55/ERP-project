@@ -9,7 +9,6 @@ use Inertia\Inertia;
 
 class DocumentTypeController extends Controller
 {
-    //
     public function index()
     {
         $data = DocumentType::all();
@@ -18,14 +17,10 @@ class DocumentTypeController extends Controller
 
     public function create()
     {
-        // $types = \App\Models\AccountType::all()->map->only('id','name');
-        // $first = \App\Models\AccountType::all('id','name')->first();
-
         $companies = \App\Models\Company::all()->map->only('id','name');
         $comp_first = \App\Models\Company::all('id','name')->first();
 
         return Inertia::render('DocumentTypes/Create',[
-            // 'types' => $types, 'first' => $first,
             'companies' => $companies, 'comp_first' => $comp_first]);
         }
 
@@ -34,15 +29,12 @@ class DocumentTypeController extends Controller
         Request::validate([
             'name' => ['required'],
             'prefix' => ['required'],
-            // 'type' => ['required'],
             'company' => ['required'],
-
         ]);
 
         DocumentType::create([
             'name' => Request::input('name'),
             'prefix' => Request::input('prefix'),
-            // 'type_id' => Request::input('type'),
             'company_id' => Request::input('company'),
         ]);
 
@@ -55,17 +47,14 @@ class DocumentTypeController extends Controller
 
     public function edit(DocumentType $documenttype)
     {
-        // $types = \App\Models\AccountType::all()->map->only('id','name');
         $companies = \App\Models\Company::all()->map->only('id','name');
         return Inertia::render('DocumentTypes/Edit', [
             'documenttype' => [
                 'id' => $documenttype->id,
-                // 'type_id' => $documenttype->type_id,
                 'name' => $documenttype->name,
                 'prefix' => $documenttype->prefix,
                 'company_id' => $documenttype->company_id,
             ],
-            // 'types' => $types,
             'companies' => $companies,
         ]);
     }
@@ -73,14 +62,10 @@ class DocumentTypeController extends Controller
     public function update(DocumentType $documenttype)
     {
         Request::validate([
-            // 'type' => ['required'],
             'name' => ['required'],
             'prefix' => ['required'],
             'company' => ['required'],
-
         ]);
-
-        // $documenttype->type_id = Request::input('type');
         $documenttype->name = Request::input('name');
         $documenttype->prefix = Request::input('prefix');
         $documenttype->company_id = Request::input('company');

@@ -10,10 +10,8 @@ use Inertia\Inertia;
 
 class YearController extends Controller
 {
-    //
     public function index()
     {
-
         return Inertia::render('Years/Index', [
             'data' => Year::all()
                 ->map(function ($year){
@@ -23,22 +21,17 @@ class YearController extends Controller
                         'end' => $year->end,
                         'company_name' => $year->company->name,
                         'company_id' => $year->company_id,
-                        // 'type_name' => $year->accountType->name,
                     ];
                 }), 
                 ]);
-                dd($data);
-
     }
 
     public function create()
     {
-
         $companies = \App\Models\Company::all()->map->only('id','name');
         $comp_first = \App\Models\Company::all('id','name')->first();
 
         return Inertia::render('Years/Create',[
-            // 'types' => $types, 'first' => $first,
         'companies' => $companies, 'comp_first' => $comp_first]);
     }
 
@@ -48,15 +41,12 @@ class YearController extends Controller
             'begin' => ['required', 'date'],
             'end' => ['required', 'date'],
             'company_id' => ['required'],
-
         ]);
-
         Year::create([
             'begin' => Request::input('begin'),
             'end' => Request::input('end'),
             'company_id' => Request::input('company_id'),
         ]);
-
         return Redirect::route('years')->with('success', 'Year created.');
     }
 
@@ -66,7 +56,6 @@ class YearController extends Controller
 
     public function edit(Year $year)
     {
-        // $types = \App\Models\AccountType::all()->map->only('id','name');
         $companies = \App\Models\Company::all()->map->only('id','name');
         return Inertia::render('Years/Edit', [
             'year' => [
@@ -75,7 +64,6 @@ class YearController extends Controller
                 'end' => $year->end,
                 'company_id' => $year->company_id,
             ],
-            // 'types' => $types,
             'companies' => $companies,
         ]);
     }
@@ -86,9 +74,7 @@ class YearController extends Controller
             'begin' => ['required', 'date'],
             'end' => ['required', 'date'],
             'company_id' => ['required'],
-
         ]);
-
         $year->begin = Request::input('begin');
         $year->end = Request::input('end');
         $year->company_id = Request::input('company_id');

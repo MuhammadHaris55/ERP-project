@@ -16,4 +16,3 @@ class UserController extends Controller
             return Inertia::render('Users/Index', ['data' => $data]);
     }
 }
-
