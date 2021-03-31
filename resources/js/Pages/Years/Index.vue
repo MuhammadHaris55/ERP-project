@@ -19,7 +19,6 @@
         </thead>
         <tbody>
           <tr v-for="item in data" :key="item.id">
-            <!-- <td class="py-1 px-4 border w-2/5">{{ item.company_id }}</td> -->
             <td class="py-1 px-4 border w-2/5">{{ item.company_name }}</td>
             <td class="py-1 px-4 border">{{ item.begin }}</td>
             <td class="py-1 px-4 border">{{ item.end }}</td>

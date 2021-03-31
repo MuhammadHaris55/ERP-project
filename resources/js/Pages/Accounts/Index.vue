@@ -15,27 +15,15 @@
           <tr class="bg-indigo-100">
             <th class="py-2 px-4 border">ID</th>
             <th class="py-2 px-4 border">Name of Account</th>
-            <!-- <th class="py-2 px-4 border w-2/5">Address</th> -->
             <th class="py-2 px-4 border">Group of Account</th>
-            <!-- <th class="py-2 px-4 border">Email</th>
-            <th class="py-2 px-4 border">Website</th>
-            <th class="py-2 px-4 border">Phone</th>
-            <th class="py-2 px-4 border">fic</th>
-            <th class="py-2 px-4 border">Phone</th> -->
             <th class="py-2 px-4 border">Action</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="item in data" :key="item.id">
-            <!-- <td class="py-1 px-4 border">{{ item.type_id }}</td> -->
-            <!-- <td class="py-1 px-4 border w-2/5">{{ item.name }}</td> -->
             <td class="py-1 px-4 border">{{ item.id }}</td>
             <td class="py-1 px-4 border">{{ item.name }}</td>
             <td class="py-1 px-4 border">{{ item.group_name }}</td>
-            <!-- <td class="py-1 px-4 border">{{ item.group_id }}</td> -->
-            <!-- <td class="py-1 px-4 border">{{ item.email }}</td>
-            <td class="py-1 px-4 border">{{ item.website }}</td>
-            <td class="py-1 px-4 border">{{ item.phone }}</td> -->
             <td class="py-1 px-4 border">
               <button
                 class="border bg-indigo-300 rounded-xl px-4 py-1 m-1"

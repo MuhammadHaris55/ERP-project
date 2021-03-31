@@ -55,15 +55,6 @@
           <div v-if="errors.phone">{{ errors.phone }}</div>
         </div>
 
-        <!-- <div class="p-2 mr-2 mb-2 mt-4 ml-6 flex flex-wrap">
-          <input
-            type="text"
-            v-model="form.fiscal"
-            class="pr-2 pb-2 w-full lg:w-1/4 rounded-md"
-            label="fiscal"
-          />
-          <div v-if="errors.fiscal">{{ errors.fiscal }}</div>
-        </div> -->
         <div class="p-2 mr-2 mb-2 ml-6 flex flex-wrap">
           <select
             v-model="form.fiscal"
@@ -74,11 +65,6 @@
             <option v-for="fiscal in fiscals" :key="fiscal" :value="fiscal">
               {{ fiscal }}
             </option>
-
-            <!-- <option :key="fiscal" :value="June">June</option>
-            <option :key="fiscal" :value="March">March</option>
-            <option :key="fiscal" :value="September">September</option>
-            <option :key="fiscal" :value="December">December</option> -->
           </select>
           <div v-if="errors.fiscal">{{ errors.fiscal }}</div>
         </div>
@@ -92,12 +78,6 @@
           <div v-if="errors.incorp">{{ errors.incorp }}</div>
         </div>
 
-        <!-- <div class="p-2 mr-2 mb-2 ml-6 flex flex-wrap">
-                    <select v-model="form.type" class="pr-2 pb-2 w-full lg:w-1/4 rounded-md" label="type" placeholder="Enter type">
-                        <option v-for="type in types" :key="type.id" :value="type.id">{{type.name}}</option>
-                    </select>
-                    <div v-if="errors.type">{{ errors.type }}</div>
-                </div> -->
         <div
           class="px-4 py-2 bg-gray-100 border-t border-gray-200 flex justify-start items-center"
         >
@@ -136,11 +116,7 @@ export default {
         email: null,
         website: null,
         phone: null,
-        // fiscal: "June","Decmber",
-        // fiscal: this.first.fiscals,
-        // fiscal: fiscals.first,
         incorp: null,
-        // type: this.first.id,
       }),
     };
   },

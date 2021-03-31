@@ -50,24 +50,6 @@
           <div v-if="errors.type">{{ errors.type }}</div>
         </div>
         <!-- REFERENCE -->
-        <!-- <div class="p-2 mr-2 mb-2 ml-6 flex flex-wrap">
-          <select
-            v-model="form.ref"
-            class="pr-2 pb-2 w-full lg:w-1/4 rounded-md"
-            label="voucher"
-            placeholder="Enter Voucher"
-          >
-            <option
-              v-for="type in accounts"
-              :key="type.id"
-              :value="type.ref"
-            >
-              {{ type.ref }}
-            </option>
-          </select>
-          <div v-if="errors.type">{{ errors.type }}</div>
-        </div> -->
-
         <div class="p-2 mr-2 mb-2 mt-4 ml-6 flex flex-wrap">
           <input
             type="text"
@@ -128,7 +110,6 @@
                   </select>
                 </td>
                 <td>
-                  <!-- @change="see($event)" -->
                   <input
                     v-model="entry.debit"
                     type="text"
@@ -193,15 +174,6 @@
                     label="myref"
                   />
                 </td>
-                <!-- <td>
-                  <input type="text" class="rounded-md w-36" readonly />
-                </td>
-                <td>
-                  <input type="text" class="rounded-md w-36" readonly />
-                </td>
-                <td>
-                  <input type="text" class="rounded-md w-36" readonly />
-                </td> -->
               </tr>
             </tbody>
           </table>
@@ -217,18 +189,6 @@
           </button>
         </div>
       </form>
-      <!-- <div id="app">
-        <select v-model="firstOption">
-          <option v-for="(item, index) in list">{{ index }}</option>
-        </select>
-        <select v-model="secondOption" v-if="firstOption">
-          <option v-for="option in list[firstOption]" value="option.size">
-            {{ option.prize }}
-          </option>
-        </select>
-      </div> -->
-
-      <!-- <option v-for="option in list[firstOption]" value="option.size">{{option.prize}}</option> -->
     </div>
   </app-layout>
 </template>
@@ -260,13 +220,6 @@ export default {
 
     accounts: Object,
     account_first: Object,
-
-    // doc_types: Object,
-    // doc_first: Object,
-
-    // refe: Object,
-
-    // account_type_first: Object,
   },
 
   data() {
@@ -281,7 +234,6 @@ export default {
         company_id: this.comp_first.id,
         year_id: this.year_first.id,
         type_id: this.doc_type_first.id,
-        // ref: this.doc_type_first.name,
         ref: "",
         date: "",
 
@@ -350,19 +302,8 @@ export default {
     deleteRow(index) {
       this.form.entries.splice(index, 1);
     },
-
-    // el: "#example",
-    // data: {
-    //   message: "Hello",
-    // },
-    // computed: {
-    //   // a computed getter
-    //   reversedMessage: function () {
-    //     // `this` points to the vm instance
-    //     return this.message.split("").reverse().join("");
-    //   },
-    // },
   },
+
   watch: {
     //  FOR DIFFERENCE OF DEBIT CREDIT
     debit: function () {
@@ -383,6 +324,7 @@ export default {
       diff = parseInt(this.debit) - parseInt(this.credit);
       this.difference = diff;
     },
+    //FOR REFEREMCE GENERATOR
     check: function () {
       let a = this.check;
       // let b = a.split("").reverse().join("");
